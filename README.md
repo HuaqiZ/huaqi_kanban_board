@@ -1,36 +1,77 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Project Name
 
-## Getting Started
+Kanban Task Management System
 
-First, run the development server:
+## Setup Instructions
+
+First, install dependencies
+
+```bash
+npm install
+```
+
+Second, run the server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+# Then Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Architecture Overview
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Routes
 
-## Learn More
+- / => Main Board Page
+- /tasks/[id] => Task detail & edit page
+  State
+- Global state is stored in localstorage
+- State updates on create,edit, and move
+- Filtered results stored in filteredTask state, updated by Filters
+  Data Flow
+- On load fetchTasks() reads tasks from localstorage
+- Board splits tasks into 3 columns
+- Tasg are handle with CreatableSelect, which supports both selectin existing tags and creating new ones dynamically
+- Actions(CRUD) => call service function => update both state and localStorage
+- Filters pass filtered tasks back to Board => Board rerenders columns
 
-To learn more about Next.js, take a look at the following resources:
+## Key Decisions & Tradeoffs
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Use localStorage for easy demo, no backend needed(no backend need)
+Modal for create, page for edit(simpler to use)
+No drag and drop, use move button(faster to build)
+Simple responsive layout(3 columns on desktop, stacked on mobile/tablet)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Accessibility & Performance Notes
 
-## Deploy on Vercel
+Inputs have labels, icons have hidden text
+Works with keyboard navigation
+Filter is optimized with useMemo
+Future: save filters between sessions
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Testing Approach
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Manual test for create, edit, delete, move
+Checked filters(search, assignee, tags)
+Checked empty state
+Tested on desktop, tablet, and mobile
+
+## Time Spent
+
+Create seed data & localstorage function ~45min
+Build all basic CRUD functions and responsive mobile layout ~3h40min
+Review all requirements & hints ~10min
+Total: ~4h30min
+
+## If I had More Time
+
+In some places, assignee, proprity and tags options are currently hardcoded; they could be fetch dynamically or made configurable by the user
+Drag and drop for moving tasks
+Save filters after refresh
+Bulk delete/move
+
+## Boilerplate & External Libraries
+
+Project initialized with create-next-app
+Used **React-Select** for multi-select tags: supports creating new tags as well as selecting existing ones
+Adapted **Flowbite modal/button/avatar styless** for task editor layout
