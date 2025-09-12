@@ -37,7 +37,10 @@ export default function TaskPage({ params }: { params: { id: string } }) {
 
   if (!task) return <div>Loading...</div>;
 
-  const handleChange = (key: keyof Task, value: any) => {
+  const handleChange = (
+    key: keyof Task,
+    value: string | TaskPriority | TaskStatus | string[]
+  ) => {
     setTask((prev) => (prev ? { ...prev, [key]: value } : prev));
   };
 

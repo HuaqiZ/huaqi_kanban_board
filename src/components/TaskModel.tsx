@@ -19,14 +19,14 @@ export default function TaskModel({
   onCreate,
   tagOptions,
 }: TaskModelProps) {
-  if (!visible) return null;
-
   const [title, setTitle] = useState("");
   const [assignee, setAssignee] = useState("");
-  const [tags, setTags] = useState<any[]>([]);
+  const [tags, setTags] = useState<{ value: string; label: string }[]>([]);
   const [priority, setPriority] = useState("");
   const [description, setDescription] = useState("");
   const { showToast } = useToast();
+
+  if (!visible) return null;
 
   const createNewTask = async (e: React.FormEvent) => {
     e.preventDefault();
