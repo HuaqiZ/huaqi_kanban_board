@@ -4,6 +4,8 @@ import { useState } from "react";
 import CreatableSelect from "react-select/creatable";
 import { useToast } from "./Toast";
 
+type Option = { value: string; label: string };
+
 type TaskModelProps = {
   visible: boolean;
   onClose: () => void;
@@ -21,7 +23,7 @@ export default function TaskModel({
 }: TaskModelProps) {
   const [title, setTitle] = useState("");
   const [assignee, setAssignee] = useState("");
-  const [tags, setTags] = useState<{ value: string; label: string }[]>([]);
+  const [tags, setTags] = useState<Option[]>([]);
   const [priority, setPriority] = useState("");
   const [description, setDescription] = useState("");
   const { showToast } = useToast();
@@ -61,6 +63,15 @@ export default function TaskModel({
       showToast("Failed to create task. Please try again.", "error");
     }
 
+    const resetForm = () => {
+      setTitle("");
+      setAssignee("");
+      setTags([]);
+      setPriority("");
+      setDescription("");
+    };
+
+    resetForm();
     onClose();
   };
 
@@ -99,7 +110,7 @@ export default function TaskModel({
           <form className="p-4 md:p-5">
             <div className="grid gap-4 mb-4 grid-cols-2">
               <div className="col-span-2">
-                <label className="block mb-2 text-sm font-medium text-gray-900 ">
+                <label className="block mb-2 text-sm font-medium text-gray-900">
                   Title<span className="text-red-500">*</span>
                 </label>
                 <input
@@ -153,7 +164,7 @@ export default function TaskModel({
                   options={tagOptions}
                   className="basic-multi-select"
                   classNamePrefix="select"
-                  onChange={(newValue) => setTags(newValue as any[])}
+                  onChange={(newValue) => setTags(newValue as Option[])}
                 />
               </div>
               <div className="col-span-2">
